@@ -13,9 +13,24 @@ public class Decide {
         return false;
     }
 
-    private static boolean LIC0() {
-        return false;
+    //Return true iff 2 consecutive points are a distance gt length1 apart.
+    public static boolean LIC0() {
+    	for(int i = 0; i < X.length-1; i++){
+    		double x1 = X[i];
+    		double x2 = X[i+1];
+    		double y1 = Y[i];
+    		double y2 = Y[i+1];
+    		double dx = x1-x2;
+    		double dy = y1-y2;
+    		double distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+    		if(distance > PARAMETERS.length1){
+    			return true;
+    		}
+    	}
+    	return false;
     }
+    
+    
     private static boolean LIC1() {
         return false;
     }
