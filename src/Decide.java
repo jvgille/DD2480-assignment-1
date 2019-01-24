@@ -56,7 +56,7 @@ public class Decide {
             double angle = Math.acos((a*a + b*b - c*c)/(2*a*b));
 
             if (angle < Math.PI - PARAMETERS.epsilon ||
-                angle > Math.PI - PARAMETERS.epsilon) {
+                angle > Math.PI + PARAMETERS.epsilon) {
                 return true;
             }
         }
