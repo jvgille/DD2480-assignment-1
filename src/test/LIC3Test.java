@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 package main;
+=======
+package decide;
+>>>>>>> a180499631fd024510d7053ea6b58de95c6ecce9
 
 import static org.junit.jupiter.api.Assertions.*;
 

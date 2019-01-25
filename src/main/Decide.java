@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 package main;
 
 import java.lang.Math;
+=======
+package decide;
+>>>>>>> a180499631fd024510d7053ea6b58de95c6ecce9
 
 public class Decide {
     public static int NUM_POINTS;
@@ -63,11 +67,15 @@ public class Decide {
         }
         return false;
     }
+<<<<<<< HEAD
 
     /**
      * The LIC should be satisfied iff there exist a set of three consecutive points which form a triangle whose area is greater than AREA1.
      * @return true if the at least one triangle has an area strictly greater than area1, false otherwise.
      */
+=======
+    
+>>>>>>> a180499631fd024510d7053ea6b58de95c6ecce9
     public static boolean LIC3() {
     	assert(PARAMETERS.area1 >= 0);
     	if(NUM_POINTS <= 2) {
@@ -75,13 +83,17 @@ public class Decide {
     	}
     	for(int i=0; i < NUM_POINTS-2; ++i) {
     		double area = Math.abs(((X[i]*(Y[i+1]-Y[i+2])+X[i+1]*(Y[i+2]-Y[i])+X[i+2]*(Y[i]-Y[i+1]))/2.0));
+<<<<<<< HEAD
     		System.out.println(area);
+=======
+>>>>>>> a180499631fd024510d7053ea6b58de95c6ecce9
     		if(area>PARAMETERS.area1) {
     			return true;
     		}
     	}
         return false;
     }
+<<<<<<< HEAD
 
     public static boolean LIC4() {
         assert (PARAMETERS.q_pts <= NUM_POINTS && PARAMETERS.q_pts >= 2); // has to be true otherwise a wrong input was
@@ -112,6 +124,10 @@ public class Decide {
                 return true;
             }
         }
+=======
+    
+    private static boolean LIC4() {
+>>>>>>> a180499631fd024510d7053ea6b58de95c6ecce9
         return false;
     }
 
