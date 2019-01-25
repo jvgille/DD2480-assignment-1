@@ -3,7 +3,7 @@ import static org.junit.Assert.*;
 import org.junit.*;
 import java.lang.Math;
 
-import decide.*;
+import main.*;
 
 public class LIC2Test {
 

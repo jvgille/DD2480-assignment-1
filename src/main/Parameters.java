@@ -1,4 +1,4 @@
-package decide;
+package main;
 
 public final class Parameters {
 	public double length1;
