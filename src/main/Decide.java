@@ -116,8 +116,46 @@ public class Decide {
         return false;
     }
 
+    /**
+     * Returns true if at least one set of three data points separated by exactly c_pts
+     * and d_pts consecutive intervening points, respectively, that form an
+     * angle such that: angle<(PI−epsilon) or angle>(PI+epsilon)
+     *
+     */
     public static boolean LIC9() {
+        assert (PARAMETERS.c_pts >= 1 && PARAMETERS.d_pts >= 1);
+        assert (PARAMETERS.c_pts + PARAMETERS.d_pts <= NUM_POINTS - 3);
+        if (NUM_POINTS < 5) {
+            return false;
+        }
+        for (int i = 0; i <= NUM_POINTS - PARAMETERS.c_pts - PARAMETERS.d_pts - 3; ++i) {
+            // the three points a, b, c where: a and b have exactly c_pts points between
+            // them and: b and c have exactly d_pts points between them
+            // b is the vertex of the angle
+            double aX = X[i];
+            double bX = X[i + PARAMETERS.c_pts + 1];
+            double cX = X[i + PARAMETERS.c_pts + PARAMETERS.d_pts + 2];
+            double aY = Y[i];
+            double bY = Y[i + PARAMETERS.c_pts + 1];
+            double cY = Y[i + PARAMETERS.c_pts + PARAMETERS.d_pts + 2];
+
+            // If either the first
+            // point or the last point (or both) coincide with the vertex, the angle is
+            // undefined and the LIC is not satisfied by those three points
+
+            if (!((aX == bX && aY == bY) || (cX == bX && cY == bY))) { // if they don't coincide we continu
+                                                                       // otherhwise we got to the next set of three
+                                                                       // points
+                double angle = computeAngle(aX, aY, bX, bY, cX, cY);
+                if (angle < Math.PI - PARAMETERS.epsilon || angle > Math.PI + PARAMETERS.epsilon) {
+                    return true;
+                }
+
+            }
+        }
+
         return false;
+
     }
 
     private static boolean LIC10() {
@@ -187,5 +225,42 @@ public class Decide {
             return 0;
         }
         return -1; // the function should not reach this line
+    }
+
+    /**
+     * computes the distance between two points (aX,aY) and (bX, bY)
+     *
+     * @param aX the x coordinate of the first point
+     * @param aY the y coordinate of the first point
+     * @param bX the x coordinate of the second point
+     * @param bY the y coordinate of the second point
+     * @return the distance between (aX,aY) and (bX, bY)
+     */
+    public static double computeDistance(double aX, double aY, double bX, double bY) {
+        return Math.sqrt((aX - bX) * (aX - bX) + (aY - bY) * (aY - bY));
+    }
+
+    /**
+     * computes the angle between two rays which share a common endpoint called a
+     * vertex the vertex is (bX,bY) and the two rays are the vectors going from
+     * (bX,bY) to (aX,aY) and from (bX,bY) to (cX,cY)
+     *
+     * @param aX the x coordinate of the first point
+     * @param aY the y coordinate of the first point
+     * @param bX the x coordinate of the second point which is the vertex
+     * @param bY the y coordinate of the second point which is the vertex
+     * @param cX the x coordinate of the third point
+     * @param cY the y coordinate of the third point
+     * @return the angle in radian
+     */
+    public static double computeAngle(double aX, double aY, double bX, double bY, double cX, double cY) {
+
+        if (aX == cX && aY == cY) { // both rays are the same so the angle between them is zero
+            return 0;
+        }
+        return Math.acos((computeDistance(bX, bY, aX, aY) * computeDistance(bX, bY, aX, aY)
+                + computeDistance(bX, bY, cX, cY) * computeDistance(bX, bY, cX, cY)
+                - computeDistance(aX, aY, cX, cY) * computeDistance(aX, aY, cX, cY))
+                / (2 * computeDistance(bX, bY, aX, aY) * computeDistance(bX, bY, cX, cY)));
     }
 }
