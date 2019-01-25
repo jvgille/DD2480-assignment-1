@@ -1,4 +1,4 @@
-package decide;
+package main;
 
 public final class Parameters {
 	public double length1;
@@ -20,9 +20,9 @@ public final class Parameters {
 	public double length2;
 	public double radius2;
 	public double area2;
-	
+
 	public Parameters() {
-		
+
 		this.length1 = 0.0;
 		this.radius1 = 0.0;
 		this.epsilon = 0.0;
@@ -43,11 +43,11 @@ public final class Parameters {
 		this.radius2 = 0.0;
 		this.area2 = 0.0;
 	}
-	
+
 	public Parameters(double length1, double radius1, double epsilon, double area1,
 			int q_pts, int quads, double dist, int n_pts, int k_pts, int a_pts, int b_pts,
 			int c_pts, int d_pts, int e_pts, int f_pts, int g_pts, double length2, double radius2, double area2) {
-		
+
 		this.length1 = length1;
 		this.radius1 = radius1;
 		this.epsilon = epsilon;
@@ -68,6 +68,6 @@ public final class Parameters {
 		this.radius2 = radius2;
 		this.area2 = area2;
 	}
-	
-	
+
+
 }
