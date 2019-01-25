@@ -64,7 +64,22 @@ public class Decide {
         return false;
     }
 
-    private static boolean LIC3() {
+    /**
+     * The LIC should be satisfied iff there exist a set of three consecutive points which form a triangle whose area is greater than AREA1.
+     * @return true if the at least one triangle has an area strictly greater than area1, false otherwise.
+     */
+    public static boolean LIC3() {
+    	assert(PARAMETERS.area1 >= 0);
+    	if(NUM_POINTS <= 2) {
+    		return false;
+    	}
+    	for(int i=0; i < NUM_POINTS-2; ++i) {
+    		double area = Math.abs(((X[i]*(Y[i+1]-Y[i+2])+X[i+1]*(Y[i+2]-Y[i])+X[i+2]*(Y[i]-Y[i+1]))/2.0));
+    		System.out.println(area);
+    		if(area>PARAMETERS.area1) {
+    			return true;
+    		}
+    	}
         return false;
     }
 
