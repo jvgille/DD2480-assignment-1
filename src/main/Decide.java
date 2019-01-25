@@ -1,3 +1,4 @@
+package decide;
 
 public class Decide {
     public static int NUM_POINTS;
@@ -22,9 +23,21 @@ public class Decide {
     private static boolean LIC2() {
         return false;
     }
-    private static boolean LIC3() {
+    
+    public static boolean LIC3() {
+    	assert(PARAMETERS.area1 >= 0);
+    	if(NUM_POINTS <= 2) {
+    		return false;
+    	}
+    	for(int i=0; i < NUM_POINTS-2; ++i) {
+    		double area = Math.abs(((X[i]*(Y[i+1]-Y[i+2])+X[i+1]*(Y[i+2]-Y[i])+X[i+2]*(Y[i]-Y[i+1]))/2.0));
+    		if(area>PARAMETERS.area1) {
+    			return true;
+    		}
+    	}
         return false;
     }
+    
     private static boolean LIC4() {
         return false;
     }
