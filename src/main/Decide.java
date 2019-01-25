@@ -1,3 +1,4 @@
+package decide;
 
 public class Decide {
     public static int NUM_POINTS;
@@ -28,7 +29,15 @@ public class Decide {
     private static boolean LIC4() {
         return false;
     }
-    private static boolean LIC5() {
+    public static boolean LIC5() {
+        if(NUM_POINTS <= 1) {
+    		return false;
+    	}
+    	for(int i=0; i < NUM_POINTS-1; ++i) {
+    		if(X[i+1]-X[i]<0) {
+    			return true;
+    		}
+    	}
         return false;
     }
     private static boolean LIC6() {
