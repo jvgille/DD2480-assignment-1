@@ -16,10 +16,10 @@ class TestLIC9 {
         double[] distances = new double[3];
         boolean test = true;
         for (int i = 0; i < 3; ++i) {
-            distances[i] = Decide.computeDistance(x[2 * i], y[2 * i], x[2 * i + 1], y[2 * i + 1]);
+            distances[i] = Decide.distance(x[2 * i], y[2 * i], x[2 * i + 1], y[2 * i + 1]);
             test = test && (Math.abs(distances[i] - realDistances[i]) < 0.001); // verifying that the computed distance
                                                                                 // is the same as the real one
-            test = test && (distances[i] == Decide.computeDistance(x[2 * i + 1], y[2 * i + 1], x[2 * i], y[2 * i]));// verifying
+            test = test && (distances[i] == Decide.distance(x[2 * i + 1], y[2 * i + 1], x[2 * i], y[2 * i]));// verifying
                                                                                                                     // that
                                                                                                                     // the
                                                                                                                     // dist(A,B)

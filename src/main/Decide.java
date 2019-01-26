@@ -179,8 +179,14 @@ public class Decide {
     }
 
     /**
-    Returns the distance between two points
-    */
+     * computes the distance between two points (x0,y0) and (x1, y1)
+     *
+     * @param x0 the x coordinate of the first point
+     * @param y0 the y coordinate of the first point
+     * @param x1 the x coordinate of the second point
+     * @param y1 the y coordinate of the second point
+     * @return the distance between (x0,y0) and (x1, y1)
+     */
     public static double distance(double x0, double y0, double x1, double y1) {
         double dx = x0 - x1;
         double dy = y0 - y1;
@@ -227,18 +233,7 @@ public class Decide {
         return -1; // the function should not reach this line
     }
 
-    /**
-     * computes the distance between two points (aX,aY) and (bX, bY)
-     *
-     * @param aX the x coordinate of the first point
-     * @param aY the y coordinate of the first point
-     * @param bX the x coordinate of the second point
-     * @param bY the y coordinate of the second point
-     * @return the distance between (aX,aY) and (bX, bY)
-     */
-    public static double computeDistance(double aX, double aY, double bX, double bY) {
-        return Math.sqrt((aX - bX) * (aX - bX) + (aY - bY) * (aY - bY));
-    }
+
 
     /**
      * computes the angle between two rays which share a common endpoint called a
@@ -258,9 +253,9 @@ public class Decide {
         if (aX == cX && aY == cY) { // both rays are the same so the angle between them is zero
             return 0;
         }
-        return Math.acos((computeDistance(bX, bY, aX, aY) * computeDistance(bX, bY, aX, aY)
-                + computeDistance(bX, bY, cX, cY) * computeDistance(bX, bY, cX, cY)
-                - computeDistance(aX, aY, cX, cY) * computeDistance(aX, aY, cX, cY))
-                / (2 * computeDistance(bX, bY, aX, aY) * computeDistance(bX, bY, cX, cY)));
+        return Math.acos((distance(bX, bY, aX, aY) * distance(bX, bY, aX, aY)
+                + distance(bX, bY, cX, cY) * distance(bX, bY, cX, cY)
+                - distance(aX, aY, cX, cY) * distance(aX, aY, cX, cY))
+                / (2 * distance(bX, bY, aX, aY) * distance(bX, bY, cX, cY)));
     }
 }
