@@ -41,15 +41,57 @@ public class Decide {
             double FT = sqrt(pow(first_x - third_x, 2) + pow(first_y - third_y, 2));
             double ST = sqrt(pow(second_x - third_x, 2) + pow(second_y - third_y, 2));
             
-            // calculating the radius range
-            double totalLength = FS * FT * ST;
-            double radiusRange =
-                    (FS + FT + ST) *
-                    (FS + FT - ST) *
-                    (FT + ST - FS) *
-                    (ST + FS - FT);
-            double radius = totalLength / sqrt(radiusRange);
+            double lLenght = 0;
+            double dummy_x = 0;
+            double dummy_y = 0;
+            double K = 0;
+            double dummy_radius = 0;
 
+            //find the smallest cyrcle, tests
+            if(FS >= FT){
+                if(FS >= ST){
+                    lLenght = FS;
+                    dummy_x = (first_x + second_x)/2;
+                    dummy_y = (first_y + second_y)/2;
+                    K = sqrt(pow(dummy_x - third_x, 2) + pow(dummy_y - third_y, 2));
+                }
+                else{
+                    lLenght = ST;
+                    dummy_x = (second_x + third_x)/2;
+                    dummy_y = (second_y + third_y)/2;
+                    K = sqrt(pow(dummy_x - first_x, 2) + pow(dummy_y - first_y, 2));
+                }
+            }
+            else if(FT >= FS){
+                if(FT >= ST){
+                    lLenght = FT;
+                    dummy_x = (first_x + third_x)/2;
+                    dummy_y = (first_y + third_y)/2;
+                    K = sqrt(pow(dummy_x - second_x, 2) + pow(dummy_y - second_y, 2));
+                }
+                else{
+                    lLenght = ST;
+                    dummy_x = (second_x + third_x)/2;
+                    dummy_y = (second_y + third_y)/2;
+                    K = sqrt(pow(dummy_x - first_x, 2) + pow(dummy_y - first_y, 2));
+                }
+            }
+
+            double radius = 0;
+            dummy_radius = lLenght/2;
+            if (dummy_radius >= K){
+                radius = dummy_radius;
+            }
+            else{
+                // Calculating the radius of the circumcircle
+                double totalLength = FS * FT * ST;
+                double radiusRange =
+                        (FS + FT + ST) *
+                        (FS + FT - ST) *
+                        (FT + ST - FS) *
+                        (ST + FS - FT);
+                radius = totalLength / sqrt(radiusRange);
+            }
             // check if points are in the radius
             if (radius > PARAMETERS.radius1) {
                 return true;

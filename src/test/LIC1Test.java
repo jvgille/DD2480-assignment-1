@@ -35,7 +35,7 @@ public class LIC1Test {
 	@Test
 	public void test2() {
 		Decide.NUM_POINTS = 5;
-        Decide.PARAMETERS.radius1= 10000;
+        Decide.PARAMETERS.radius1= 15;
 
         //expect false
 		Decide.X = new double[]{10, 5, 8, 15, 6};
