@@ -198,9 +198,30 @@ public class Decide {
         return false;
     }
 
-    private static boolean LIC7() {
+    /*
+    LIC is met iff there exist at least one set of 2 data points, separated by exactly K_PTS
+    consecutive intervening points, that are a distance greater than LENGHT1 apart.
+    Length1 >= 0
+    K_PTS >=1
+    K_PTS <= NUM_POINTS - 2
+    */
+    public static boolean LIC7() {
+      int kpt = PARAMETERS.k_pts;
+      if(NUM_POINTS < 3){
         return false;
-    }
+      }
+      for(int i = 0; i < NUM_POINTS - 1 - kpt; i++){
+        double x0 = X[i];
+        double y0 = Y[i];
+        double x1 = X[i+kpt+1];
+        double y1 = Y[i+kpt+1];
+        if(distance(x0,y0,x1,y1) > PARAMETERS.length1){
+          return true;
+        }
+      }//for
+
+        return false;
+    }//lic7
 
     private static boolean LIC8() {
         return false;
