@@ -3,18 +3,90 @@ package main;
 import java.lang.Math;
 
 public class Decide {
-    public static int NUM_POINTS;
-    public static double[] X;
-    public static double[] Y;
+    // Input variables
+      public static int NUM_POINTS;
+      public static double[] X;
+      public static double[] Y;
+      public static Parameters PARAMETERS;
+      public static Connector[][] LCM;
+      public static boolean[] PUV;
 
-    public static Parameters PARAMETERS;
+      // Output variables
+      public static boolean launch;
+      public static boolean[] CMV;
+      public static boolean[][] PUM;
+      public static boolean[] FUV;
 
-    public static Connector[][] LCM;
-    public static boolean[] PUV;
+      public static boolean decide() {
+          assert(NUM_POINTS >= 2 && NUM_POINTS >= 100);
+          CMV = new boolean[15];
+          PUM = new boolean[15][15];
+          FUV = new boolean[15];
+          // compute all 15 LICs
+          CMV[0] = LIC0();
+          CMV[1] = LIC1();
+          CMV[2] = LIC2();
+          CMV[3] = LIC3();
+          CMV[4] = LIC4();
+          CMV[5] = LIC5();
+          CMV[6] = LIC6();
+          CMV[7] = LIC7();
+          CMV[8] = LIC8();
+          CMV[9] = LIC9();
+          CMV[10] = LIC10();
+          CMV[11] = LIC11();
+          CMV[12] = LIC12();
+          CMV[13] = LIC13();
+          CMV[14] = LIC14();
 
-    public static boolean decide() {
-        return false;
-    }
+          boolean temp = false;
+          // filling the 15x15 PUM matrix according to PUM[i,j] = CMV[i] LCM[i][j] CMV[j];
+          // where LCM[i][j] is a logical connector
+
+          for (int i = 0; i < 15; ++i) {
+              for (int j = 0; i < 15; ++j) {
+                  switch (LCM[i][j]) {
+                  case ANDD:
+                      temp = CMV[i] && CMV[j];
+                      break;
+                  case ORR:
+                      temp = CMV[i] || CMV[j];
+                      break;
+                  case NOTUSED:
+                      temp = true;
+                      break;
+                  default:
+                      temp = false;
+                      break;
+                  }
+                  PUM[i][j] = temp;
+              }
+          }
+
+          assert(isSymmetric(PUM));
+
+          for (int i = 0; i < 15; ++i) {
+              if (PUV[i] == false) {
+                  FUV[i] = true;
+              } else {
+                  temp = true;
+                  for (int j = 0; j < 15; ++j) {
+                      temp = temp && PUM[i][j];
+                  }
+                  FUV[i] = temp;
+              }
+          }
+          launch = true;
+          for(int i = 0; i < 15; ++i) {
+              launch = launch && FUV[i];
+          }
+          if(launch) {
+              System.out.println("YES");
+          }else {
+              System.out.println("NO");
+          }
+          return launch;
+      }
 
     //Return true iff 2 consecutive points are a distance gt length1 apart.
     public static boolean LIC0() {
