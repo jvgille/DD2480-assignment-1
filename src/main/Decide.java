@@ -1,6 +1,8 @@
 package main;
 
 import java.lang.Math;
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
 
 public class Decide {
     public static int NUM_POINTS;
@@ -19,8 +21,40 @@ public class Decide {
     private static boolean LIC0() {
         return false;
     }
+    /*
+    There exists at least one set of three consecutive data points that 
+    cannot all be contained within or on a circle of radius RADIUS1.
+    (0 ≤ RADIUS1)
+    */
+    public static boolean LIC1() {
+        
+        for (int i = 0; i < NUM_POINTS - 2; i++){ //has to be three in a row (-2)
+            double first_x = X[i];
+            double first_y = Y[i];
+            double second_x = X[i+1];
+            double second_y = Y[i+1];
+            double third_x = X[i+2];
+            double third_y = Y[i+2];
 
-    private static boolean LIC1() {
+            //length between points
+            double FS = sqrt(pow(first_x - second_x, 2) + pow(first_y - second_y, 2));
+            double FT = sqrt(pow(first_x - third_x, 2) + pow(first_y - third_y, 2));
+            double ST = sqrt(pow(second_x - third_x, 2) + pow(second_y - third_y, 2));
+            
+            // calculating the radius range
+            double totalLength = FS * FT * ST;
+            double radiusRange =
+                    (FS + FT + ST) *
+                    (FS + FT - ST) *
+                    (FT + ST - FS) *
+                    (ST + FS - FT);
+            double radius = totalLength / sqrt(radiusRange);
+
+            // check if points are in the radius
+            if (radius > PARAMETERS.radius1) {
+                return true;
+            }
+        }
         return false;
     }
 
