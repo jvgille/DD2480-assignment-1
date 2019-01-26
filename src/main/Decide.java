@@ -339,7 +339,24 @@ public class Decide {
 
     }
 
-    private static boolean LIC10() {
+    /**
+     * The LIC should be satisfied iff there exist a set of three consecutive points, separated by exactly E PTS and F PTS consecutive intervening points,
+	 * respectively, which form a triangle whose area is greater than AREA1.
+     * @return true when an area greater than area1 is found.
+     */
+    public static boolean LIC10() {
+    	assert(PARAMETERS.area1 >= 0);
+    	int e_pts = PARAMETERS.e_pts;
+    	int f_pts = PARAMETERS.f_pts;
+    	if(NUM_POINTS<5 || e_pts<1 || f_pts<1 || e_pts+f_pts>NUM_POINTS-3) {
+    		return false;
+    	}
+    	for(int i=0; i < NUM_POINTS-(e_pts+f_pts+2); ++i) {
+    		double area = computeTriangleArea(X[i], Y[i], X[i+1+e_pts], Y[i+1+e_pts], X[i+2+e_pts+f_pts], Y[i+2+e_pts+f_pts]);
+    		if(area>PARAMETERS.area1) {
+    			return true;
+    		}
+    	}
         return false;
     }
 
