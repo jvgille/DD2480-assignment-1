@@ -114,7 +114,20 @@ public class Decide {
         return false;
     }
 
-    private static boolean LIC5() {
+    /**
+     * The LIC should be satisfied if there exists at least two consecutive data points (X[i],Y[i]) and (X[j],Y[j]), 
+	 * such that X[j] - X[i] < 0. (where i = j-1)
+     * @return true when the above condition is achieved. False otherwise.
+     */
+    public static boolean LIC5() {
+        if(NUM_POINTS <= 1) {
+    		return false;
+    	}
+    	for(int i=0; i < NUM_POINTS-1; ++i) {
+    		if(X[i+1]-X[i]<0) {
+    			return true;
+    		}
+    	}
         return false;
     }
 
