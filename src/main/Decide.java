@@ -126,7 +126,7 @@ public class Decide {
     }
 
     /**
-     * The LIC should be satisfied if there exists at least two consecutive data points (X[i],Y[i]) and (X[j],Y[j]), 
+     * The LIC should be satisfied if there exists at least two consecutive data points (X[i],Y[i]) and (X[j],Y[j]),
 	 * such that X[j] - X[i] < 0. (where i = j-1)
      * @return true when the above condition is achieved. False otherwise.
      */
@@ -212,9 +212,46 @@ public class Decide {
         return false;
     }
 
-    private static boolean LIC14() {
-        return false;
-    }
+    /**
+  * Returns true if there exists at least one set of three data points, separated
+  * by exactly e_pts and f_pts consecutive intervening points, respectively, that
+  * are the vertices of a triangle with area greater than AREA1 and if there
+  * exist three data points (which can be the same or different from the three
+  * data points just mentioned) separated by exactly e_pts and f_pts consecutive
+  * intervening points, respectively, that are the vertices of a triangle with
+  * area less than AREA2.
+  *
+  */
+ public static boolean LIC14() {
+     assert (PARAMETERS.area1 >= 0 && PARAMETERS.area2 >= 0);
+     assert (PARAMETERS.e_pts >= 0 && PARAMETERS.f_pts >= 0);
+     if (NUM_POINTS < 5) {
+         return false;
+     }
+     boolean gtArea1 = false; //will be set to true if there is a triangle with area greater than area1
+     boolean ltArea2 = false; //will be set to true if there is a triangle with area less than area2
+     for (int i = 0; (i <= NUM_POINTS - PARAMETERS.e_pts - PARAMETERS.f_pts - 3); ++i) {
+         // the three points a, b, c where: a and b have exactly e_pts points between
+         // them and: b and c have exactly f_pts points between them
+         // a,b,c are the vertex of a triangle
+         double aX = X[i];
+         double bX = X[i + PARAMETERS.e_pts + 1];
+         double cX = X[i + PARAMETERS.e_pts + PARAMETERS.f_pts + 2];
+         double aY = Y[i];
+         double bY = Y[i + PARAMETERS.e_pts + 1];
+         double cY = Y[i + PARAMETERS.e_pts + PARAMETERS.f_pts + 2];
+         double area = computeTriangleArea(aX, aY, bX, bY, cX, cY);
+         if (area > PARAMETERS.area1) {
+             gtArea1 = true;
+         }
+         if (area < PARAMETERS.area2) {
+             ltArea2 = true;
+         }
+     }
+
+     return gtArea1 && ltArea2; //we return true if both condition are met.
+
+ }
 
     /**
      * computes the distance between two points (x0,y0) and (x1, y1)
@@ -296,4 +333,24 @@ public class Decide {
                 - distance(aX, aY, cX, cY) * distance(aX, aY, cX, cY))
                 / (2 * distance(bX, bY, aX, aY) * distance(bX, bY, cX, cY)));
     }
+
+    /**
+    * computes the area of the triangle formed by the vertices (aX,aY), (bX,bY) and
+    * (cX,cY)
+    *
+    * @param aX the x coordinate of the first vertex
+    * @param aY the y coordinate of the first vertex
+    * @param bX the x coordinate of the second vertex
+    * @param bY the y coordinate of the second vertex
+    * @param cX the x coordinate of the third vertex
+    * @param cY the y coordinate of the third vertex
+    * @return the area of the triangle
+    */
+   public static double computeTriangleArea(double aX, double aY, double bX, double bY, double cX, double cY) {
+
+       if ((aX == cX && aY == cY) || (aX == bX && aY == bY) || (cX == bX && cY == bY)) {
+           return 0; // two vertices are at the same point so the are should be 0
+       }
+       return Math.abs((aX * (bY - cY) + bX * (cY - aY) + cX * (aY - bY)) / 2);
+   }
 }
