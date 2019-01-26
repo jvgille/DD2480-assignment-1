@@ -142,7 +142,59 @@ public class Decide {
         return false;
     }
 
-    private static boolean LIC6() {
+    /**
+    Returns true if there is a set of n_pts consecutive points such that
+    if the first and last point coincide:
+        one of the points is further than dist units away from those points
+    else:
+        one of the points is further than dist units away from
+        the line that passes through the first and the last point
+    */
+    public static boolean LIC6() {
+        assert(NUM_POINTS >= PARAMETERS.n_pts && PARAMETERS.n_pts >= 3);
+        assert(PARAMETERS.dist >= 0);
+
+        for (int start = 0; start < NUM_POINTS - PARAMETERS.n_pts + 1; start++) {
+            int end = start + PARAMETERS.n_pts - 1;
+
+            if (same(X[start], Y[start], X[end], Y[end])) {     // calculate distance to point
+                for (int i = start + 1; i < end; i++) {
+                    if (distance(X[start], Y[start], X[i], Y[i]) > PARAMETERS.dist) {
+                        return true;
+                    }
+                }
+            } else {                                            // calculate distance to line
+                // the general equation for a line is
+                // a*x + b*y + c = 0
+                double a, b, c;
+
+                if (X[start] == X[end]) {
+                    // the slope is infinite, and the equation is just
+                    // x = X[start]
+                    a = 1;
+                    b = 0;
+                    c = -X[start];
+                } else {
+                    // determine y = kx+m and then convert to general equation
+                    double dx = X[end] - X[start];
+                    double dy = Y[end] - Y[start];
+                    double k = dy / dx;
+                    double m = Y[start] - k * X[start];
+                    a = -k;
+                    b = 1;
+                    c = -m;
+                }
+
+                for (int i = start + 1; i < end; i++) {
+                    // the distance between a point (x,y) and a line a*x+b*y+c=0 is given by
+                    // |a*x+b*y+c|/(sqrt(a²+b²))
+                    double distance = Math.abs(a*X[i] + b*Y[i] + c) / Math.sqrt(a*a + b*b);
+                    if (distance > PARAMETERS.dist) {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
@@ -309,6 +361,11 @@ public class Decide {
     }
 
 
+  public static boolean same(double x0, double y0, double x1, double y1) {
+        return x0 == x1 && y0 == y1;
+    }
+
+
 
     /**
      * computes the angle between two rays which share a common endpoint called a
@@ -353,4 +410,5 @@ public class Decide {
        }
        return Math.abs((aX * (bY - cY) + bX * (cY - aY) + cX * (aY - bY)) / 2);
    }
+
 }
