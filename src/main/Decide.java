@@ -204,9 +204,43 @@ public class Decide {
         return false;
     }
 
-    private static boolean LIC12() {
+    /*
+    LIC met if;
+    * There are 2 points (at least) separated by exactly k_pts, which are a distance greater than length1 apart.
+    * There are 2 points (could be same as above, could be other points) separated by exactly k_pts, that are less than
+      length2 apart.
+    *Both parts have to be true.
+    *Not met when NUM_POINTS < 3
+    *length2 >= 0
+
+    */
+    public static boolean LIC12() {
+      if(NUM_POINTS < 3){
         return false;
-    }
+      }
+
+      int kpt = PARAMETERS.k_pts;
+      boolean l1 = false;
+      boolean l2 = false;
+
+      for(int i = 0; i < NUM_POINTS - 1 - kpt; i++){
+        double x0 = X[i];
+        double y0 = Y[i];
+        double x1 = X[i+kpt+1];
+        double y1 = Y[i+kpt+1];
+        double distance = distance(x0,y0,x1,y1);
+        if(distance > PARAMETERS.length1){
+          l1 = true;
+        }
+        if(distance < PARAMETERS.length2){
+          l2 = true;
+        }
+        if(l1 && l2){
+          return true;
+        }
+      }//for
+      return false;
+    }//LIC12
 
     private static boolean LIC13() {
         return false;
