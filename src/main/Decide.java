@@ -178,7 +178,7 @@ public class Decide {
     		return false;
     	}
     	for(int i=0; i < NUM_POINTS-2; ++i) {
-    		double area = Math.abs(((X[i]*(Y[i+1]-Y[i+2])+X[i+1]*(Y[i+2]-Y[i])+X[i+2]*(Y[i]-Y[i+1]))/2.0));
+    		double area = computeTriangleArea(X[i], Y[i], X[i+1], Y[i+1], X[i+2], Y[i+2]);
     		if(area>PARAMETERS.area1) {
     			return true;
     		}
@@ -415,7 +415,22 @@ public class Decide {
         return false;
     }
 
-    private static boolean LIC11() {
+    /**
+     * The LIC should be satisfied if there exists at least two consecutive data points (X[i],Y[i]) and (X[j],Y[j]), 
+	 * separated by exactly G PTS consecutive intervening points,
+	 * such that X[j] - X[i] < 0. (where i = j-1)
+     * @return true when the above condition is completed. False otherwise
+     */
+    public static boolean LIC11() {
+    	int g_pts = PARAMETERS.g_pts;
+    	if(NUM_POINTS<3 || g_pts<1 || g_pts>NUM_POINTS-2 ) {
+    		return false;
+    	}
+    	for(int i=0; i < NUM_POINTS-(g_pts+1); ++i) {
+    		if(X[i+g_pts+1]-X[i]<0) {
+    			return true;
+    		}
+    	}
         return false;
     }
 

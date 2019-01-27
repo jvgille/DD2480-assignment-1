@@ -69,21 +69,5 @@ class LIC3Test {
 		Decide.PARAMETERS = p;
 		assertThrows(IndexOutOfBoundsException.class,()->{Decide.LIC3();});
 	}
-	/**
-	 * In this case we give a negative area1.
-	 * The assertion in the beginning of the method should return an AssertError.
-	 */
-	@Test()
-	void assertErrorWithNegativeArea() {
-		Decide.NUM_POINTS = 3;
-		double x[] = {5,10,15};
-		double y[] = {0,2,4};
-		Decide.X = x;
-		Decide.Y = y;
-		Parameters p = new Parameters();
-		p.area1 = -2;
-		Decide.PARAMETERS = p;
-		assertThrows(AssertionError.class,()->{Decide.LIC3();});
-	}
 }
 
