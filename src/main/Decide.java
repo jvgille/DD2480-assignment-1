@@ -38,11 +38,20 @@ public class Decide {
             double second_y = Y[i+1];
             double third_x = X[i+2];
             double third_y = Y[i+2];
-    
+
+            Point first = new Point(first_x, first_y);
+            Point second = new Point(second_x, second_y);
+            Point third = new Point(third_x, third_y);
+
+            if (smallestCircle(new Point[]{first, second, third}) > PARAMETERS.radius1) {
+                return true;
+            }
+            /* old method 
             //throw to smallestCircle
             if(smallestCircle(first_x, first_y, second_x, second_y, third_x, third_y, PARAMETERS.radius1)) {
                 return true;
-            } 
+            }  
+            */
         }
         return false;
     }

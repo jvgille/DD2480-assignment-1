@@ -12,9 +12,6 @@ public class LIC1Test {
 	There exists at least one set of three consecutive data points that 
     cannot all be contained within or on a circle of radius RADIUS1.
 	(0 ≤ RADIUS1)
-	
-	TO-DO
-	This is not finished... Im having test issues and wanted tu rush smallestCircle in master.
 	 */
 	@Test
 	public void test1() {
