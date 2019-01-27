@@ -37,59 +37,58 @@ public class Decide {
             double third_y = Y[i+2];
 
             //length between points
-            double FS = sqrt(pow(first_x - second_x, 2) + pow(first_y - second_y, 2));
-            double FT = sqrt(pow(first_x - third_x, 2) + pow(first_y - third_y, 2));
-            double ST = sqrt(pow(second_x - third_x, 2) + pow(second_y - third_y, 2));
-            
-            double lLenght = 0;
-            double dummy_x = 0;
-            double dummy_y = 0;
-            double K = 0;
-            double dummy_radius = 0;
+            double distFirstSecond = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
+            double distFirstThird = sqrt(pow(x1 - x3, 2) + pow(y1 - y3, 2));
+            double distSecondThird = sqrt(pow(x2 - x3, 2) + pow(y2 - y3, 2));
+
+            double longesDist = 0;
+            double longestDistAverageX = 0;
+            double longestDistAverageY = 0;
+            double distCenterToOutsider = 0;
+            double longestDistRadius = 0;
 
             //find the smallest cyrcle, tests
-            if(FS >= FT){
-                if(FS >= ST){
-                    lLenght = FS;
-                    dummy_x = (first_x + second_x)/2;
-                    dummy_y = (first_y + second_y)/2;
-                    K = sqrt(pow(dummy_x - third_x, 2) + pow(dummy_y - third_y, 2));
+            if(distFirstSecond >= distFirstThird){
+                if(distFirstSecond >= distSecondThird){
+                    longesDist = distFirstSecond;
+                    longestDistAverageX = (x1 + x2)/2;
+                    longestDistAverageY = (y1 + y2)/2;
+                    distCenterToOutsider = sqrt(pow(longestDistAverageX - x3, 2) + pow(longestDistAverageY - y3, 2));
                 }
                 else{
-                    lLenght = ST;
-                    dummy_x = (second_x + third_x)/2;
-                    dummy_y = (second_y + third_y)/2;
-                    K = sqrt(pow(dummy_x - first_x, 2) + pow(dummy_y - first_y, 2));
+                    longesDist = distSecondThird;
+                    longestDistAverageX = (x2 + x3)/2;
+                    longestDistAverageY = (y2 + y3)/2;
+                    distCenterToOutsider = sqrt(pow(longestDistAverageX - x1, 2) + pow(longestDistAverageY - y1, 2));
                 }
             }
-            else if(FT >= FS){
-                if(FT >= ST){
-                    lLenght = FT;
-                    dummy_x = (first_x + third_x)/2;
-                    dummy_y = (first_y + third_y)/2;
-                    K = sqrt(pow(dummy_x - second_x, 2) + pow(dummy_y - second_y, 2));
+            else if(distFirstThird >= distFirstSecond){
+                if(distFirstThird >= distSecondThird){
+                    longesDist = distFirstThird;
+                    longestDistAverageX = (x1 + x3)/2;
+                    longestDistAverageY = (y1 + y3)/2;
+                    distCenterToOutsider = sqrt(pow(longestDistAverageX - x2, 2) + pow(longestDistAverageY - y2, 2));
                 }
                 else{
-                    lLenght = ST;
-                    dummy_x = (second_x + third_x)/2;
-                    dummy_y = (second_y + third_y)/2;
-                    K = sqrt(pow(dummy_x - first_x, 2) + pow(dummy_y - first_y, 2));
+                    longesDist = distSecondThird;
+                    longestDistAverageX = (x2 + x3)/2;
+                    longestDistAverageY = (y2 + y3)/2;
+                    distCenterToOutsider = sqrt(pow(longestDistAverageX - x1, 2) + pow(longestDistAverageY - y1, 2));
                 }
             }
-
             double radius = 0;
-            dummy_radius = lLenght/2;
-            if (dummy_radius >= K){
-                radius = dummy_radius;
+            longestDistRadius = longesDist/2;
+            if (longestDistRadius >= distCenterToOutsider){
+                radius = longestDistRadius;
             }
             else{
-                // Calculating the radius of the circumcircle
-                double totalLength = FS * FT * ST;
+                // circumcircle if needed
+                double totalLength = distFirstSecond * distFirstThird * distSecondThird;
                 double radiusRange =
-                        (FS + FT + ST) *
-                        (FS + FT - ST) *
-                        (FT + ST - FS) *
-                        (ST + FS - FT);
+                    (distFirstSecond + distFirstThird + distSecondThird) *
+                    (distFirstSecond + distFirstThird - distSecondThird) *
+                    (distFirstThird + distSecondThird - distFirstSecond) *
+                    (distSecondThird + distFirstSecond - distFirstThird);
                 radius = totalLength / sqrt(radiusRange);
             }
             // check if points are in the radius
@@ -263,5 +262,70 @@ public class Decide {
             return 0;
         }
         return -1; // the function should not reach this line
+    }
+
+    //static boolean that can checks if 3 points are in a radius
+    static boolean smallestCircle(double x1, double y1, double x2, double y2, double x3, double y3, double radiusIn ){
+
+        //length between points
+        double distFirstSecond = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
+        double distFirstThird = sqrt(pow(x1 - x3, 2) + pow(y1 - y3, 2));
+        double distSecondThird = sqrt(pow(x2 - x3, 2) + pow(y2 - y3, 2));
+        
+        double longesDist = 0;
+        double longestDistAverageX = 0;
+        double longestDistAverageY = 0;
+        double distCenterToOutsider = 0;
+        double longestDistRadius = 0;
+
+        //find the smallest cyrcle, tests
+        if(distFirstSecond >= distFirstThird){
+            if(distFirstSecond >= distSecondThird){
+                longesDist = distFirstSecond;
+                longestDistAverageX = (x1 + x2)/2;
+                longestDistAverageY = (y1 + y2)/2;
+                distCenterToOutsider = sqrt(pow(longestDistAverageX - x3, 2) + pow(longestDistAverageY - y3, 2));
+            }
+            else{
+                longesDist = distSecondThird;
+                longestDistAverageX = (x2 + x3)/2;
+                longestDistAverageY = (y2 + y3)/2;
+                distCenterToOutsider = sqrt(pow(longestDistAverageX - x1, 2) + pow(longestDistAverageY - y1, 2));
+            }
+        }
+        else if(distFirstThird >= distFirstSecond){
+            if(distFirstThird >= distSecondThird){
+                longesDist = distFirstThird;
+                longestDistAverageX = (x1 + x3)/2;
+                longestDistAverageY = (y1 + y3)/2;
+                distCenterToOutsider = sqrt(pow(longestDistAverageX - x2, 2) + pow(longestDistAverageY - y2, 2));
+            }
+            else{
+                longesDist = distSecondThird;
+                longestDistAverageX = (x2 + x3)/2;
+                longestDistAverageY = (y2 + y3)/2;
+                distCenterToOutsider = sqrt(pow(longestDistAverageX - x1, 2) + pow(longestDistAverageY - y1, 2));
+            }
+        }
+        double radiusCircle = 0;
+        longestDistRadius = longesDist/2;
+        if (longestDistRadius >= distCenterToOutsider){
+            radiusCircle = longestDistRadius;
+        }
+        else{
+            // Calculating the radius of the circumcircle
+            double totalLength = distFirstSecond * distFirstThird * distSecondThird;
+            double radiusRange =
+                (distFirstSecond + distFirstThird + distSecondThird) *
+                (distFirstSecond + distFirstThird - distSecondThird) *
+                (distFirstThird + distSecondThird - distFirstSecond) *
+                (distSecondThird + distFirstSecond - distFirstThird);
+            radiusCircle = totalLength / sqrt(radiusRange);
+        }
+        // Check 
+        if (radiusCircle >= radiusIn) {
+            return true;
+        }
+        return false;
     }
 }

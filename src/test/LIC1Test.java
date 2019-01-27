@@ -13,7 +13,10 @@ public class LIC1Test {
     /*
 	There exists at least one set of three consecutive data points that 
     cannot all be contained within or on a circle of radius RADIUS1.
-    (0 ≤ RADIUS1)
+	(0 ≤ RADIUS1)
+	
+	TO-DO
+	This is not finished... Im having test issues and wanted tu rush smallestCircle in master.
 	 */
 	@Before
 	public void before() {
@@ -24,7 +27,7 @@ public class LIC1Test {
 	@Test
 	public void test1() {
 		Decide.NUM_POINTS = 5;
-        Decide.PARAMETERS.radius1= 3;
+        Decide.PARAMETERS.radius1 = 3;
 
         //expect infinity and true
 		Decide.X = new double[]{0, 1, 2, 3, 4};
