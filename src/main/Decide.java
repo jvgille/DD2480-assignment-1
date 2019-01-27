@@ -27,7 +27,11 @@ public class Decide {
     (0 ≤ RADIUS1)
     */
     public static boolean LIC1() {
-        
+        //if radius is less than 0
+        if (0 > PARAMETERS.radius1) {
+            return false;
+        }
+
         for (int i = 0; i < NUM_POINTS - 2; i++){ //has to be three in a row (-2)
             double first_x = X[i];
             double first_y = Y[i];
@@ -187,7 +191,31 @@ public class Decide {
         return false;
     }
 
+    /*
+    There exists at least one set of three data points separated by exactly A PTS 
+    and B PTS consecutive intervening points, respectively, that cannot be 
+    contained within or on a circle of radius RADIUS1. The condition is not 
+    met when NUMPOINTS < 5.
+    1 ≤ A PTS, 1 ≤ B PTS
+    A PTS+B PTS ≤ (NUMPOINTS−3)
+    */
     private static boolean LIC8() {
+        //conditions
+        if(NUM_POINTS < 5 || PARAMETERS.a_pts < 1 || PARAMETERS.b_pts < 1 || PARAMETERS.a_pts + PARAMETERS.b_pts > NUM_POINTS - 3){
+            return false;
+        }
+        
+        for(int i = 0; i < NUM_POINTS - 2 - PARAMETERS.a_pts - PARAMETERS.b_pts; i++){ //has to be three in a row (-2)
+            double first_x = X[i];
+            double first_y = Y[i];
+            double second_x = X[i+1+PARAMETERS.a_pts];
+            double second_y = Y[i+1+PARAMETERS.a_pts];
+            double third_x = X[i+2+PARAMETERS.a_pts+PARAMETERS.b_pts];
+            double third_y = Y[i+2+PARAMETERS.a_pts+PARAMETERS.b_pts];
+            if(smallestCircle(first_x, first_y, second_x, second_y, third_x, third_y, PARAMETERS.radius1)) {
+                return true;
+            } 
+        } 
         return false;
     }
 
