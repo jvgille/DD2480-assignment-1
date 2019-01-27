@@ -33,4 +33,4 @@ Your contribution
 * Joel Gille Vikström
 Your contribution
 * Paul Roland Jacques Griesser
-Your contribution
+I contributed by talking with the group about the structure of the project and the division of the tasks. I coded three LICs and their tests, the 4th, 9th and 14th. I reviewed code for LICs 0, 5, 6 and merge them to the master branch. I also coded the decide method.
