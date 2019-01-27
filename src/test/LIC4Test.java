@@ -6,22 +6,7 @@ import org.junit.Test;
 
 import main.*;
 
-public class TestLIC4 {
-
-    @Test
-    public void test1() { // Test the whichQuadrant function for corner and normal cases
-        double[] x = { 0, -1, 0, 0, 1, 10, 10, -10, -10 }; // coordinates of our points
-        double[] y = { 0, 0, -1, 1, 0, 10, -10, 10, -10 };
-        int[] realIndexes = { 0, 1, 2, 0, 0, 0, 3, 1, 2 }; // quadrants in which they should belong
-        int[] indexes = new int[x.length];
-        boolean test = true;
-        for (int i = 0; i < x.length; ++i) {
-            indexes[i] = Decide.whichQuadrants(x[i], y[i]);
-            test = test && (indexes[i] == realIndexes[i]); // verifying that our index is the same as the real one
-        }
-
-        assertTrue(test);
-    }
+public class LIC4Test {
 
     @Test
     public void test2() { // Test the LIC4 function for corner case

@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class TestLIC7{
+public class LIC7Test {
 
   /*
   LIC is met iff there exist at least one set of 2 data points, separated by exactly K_PTS
