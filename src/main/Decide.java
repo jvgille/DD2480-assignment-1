@@ -1,6 +1,8 @@
 package main;
 
 import java.lang.Math;
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
 
 public class Decide {
     // Input variables
@@ -100,11 +102,40 @@ public class Decide {
     	}
     	return false;
     }
+    /*
+    There exists at least one set of three consecutive data points that 
+    cannot all be contained within or on a circle of radius RADIUS1.
+    (0 ≤ RADIUS1)
+    */
+    public static boolean LIC1() {
+        //if radius is less than 0
+        if (0 > PARAMETERS.radius1) {
+            return false;
+        }
+        for (int i = 0; i < NUM_POINTS - 2; i++){ //has to be three in a row (-2)
+            double first_x = X[i];
+            double first_y = Y[i];
+            double second_x = X[i+1];
+            double second_y = Y[i+1];
+            double third_x = X[i+2];
+            double third_y = Y[i+2];
 
-    private static boolean LIC1() {
+            Point first = new Point(first_x, first_y);
+            Point second = new Point(second_x, second_y);
+            Point third = new Point(third_x, third_y);
+
+            if (smallestCircle(new Point[]{first, second, third}) > PARAMETERS.radius1) {
+                return true;
+            }
+            /* old method 
+            //throw to smallestCircle
+            if(smallestCircle(first_x, first_y, second_x, second_y, third_x, third_y, PARAMETERS.radius1)) {
+                return true;
+            }  
+            */
+        }
         return false;
     }
-
     /**
     Returns true if at least one set of three consecutive points form an angle such that
         angle<(PI−EPSILON)
