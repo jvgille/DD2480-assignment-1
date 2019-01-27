@@ -402,8 +402,40 @@ public class Decide {
       return false;
     }//LIC12
 
-    private static boolean LIC13() {
-        return false;
+    /**
+    - There exists a set of three points separated by APTS and BPTS consecutive intervening points,
+      that CANNOT be contained within or on a circle of radius RADIUS1.
+    - There exists a set of three points separated by APTS and BPTS consecutive intervening points,
+      that CAN be contained in or on a circle of radius RADIUS2.
+    Both parts must be true for the LIC to be true.
+    The condition is not met when NUMPOINTS < 5.
+    */
+    public static boolean LIC13() {
+        if (NUM_POINTS < 5) {
+            return false;
+        }
+
+        boolean cond_1_met = false;
+        boolean cond_2_met = false;
+
+        for (int i = 0; i + PARAMETERS.a_pts + PARAMETERS.b_pts + 2 < NUM_POINTS; i++) {
+            int j = i + PARAMETERS.a_pts + 1;
+            int k = j + PARAMETERS.b_pts + 1;
+
+            Point first = new Point(X[i], Y[i]);
+            Point second = new Point(X[j], Y[j]);
+            Point third = new Point(X[k], Y[k]);
+
+            if (smallestCircle(new Point[]{first, second, third}) > PARAMETERS.radius1) {
+                cond_1_met = true;
+            }
+
+            if (smallestCircle(new Point[]{first, second, third}) <= PARAMETERS.radius2) {
+                cond_2_met = true;
+            }
+        }
+
+        return cond_1_met && cond_2_met;
     }
 
     /**
@@ -448,8 +480,74 @@ public class Decide {
  }
 
     /**
-     * computes the distance between two points (x0,y0) and (x1, y1)
-     *
+    Returns the radius of the smallest circle containing all the points.
+    */
+    public static double smallestCircle(Point[] points) {
+        Point circle = Point.average(points[0], points[1]);
+        double radius = distance(points[0], points[1]) / 2;
+        if (distance(circle, points[2]) <= radius) {
+            return radius;
+        }
+        circle = Point.average(points[1], points[2]);
+        radius = distance(points[1], points[2]) / 2;
+        if (distance(circle, points[0]) <= radius) {
+            return radius;
+        }
+        circle = Point.average(points[0], points[2]);
+        radius = distance(points[0], points[2]) / 2;
+        if (distance(circle, points[1]) <= radius) {
+            return radius;
+        }
+
+        // at this point we know all the points are on the circle's perimeter
+        // we use black magic (determinants) to get the radius
+        double x_i = points[0].x;
+        double y_i = points[0].y;
+        double x_j = points[1].x;
+        double y_j = points[1].y;
+        double x_k = points[2].x;
+        double y_k = points[2].y;
+
+        double a = determinant(x_i, y_i, 1,
+                               x_j, y_j, 1,
+                               x_k, y_k, 1);
+
+        double d = determinant(x_i*x_i + y_i*y_i, y_i, 1,
+                               x_j*x_j + y_j*y_j, y_j, 1,
+                               x_k*x_k + y_k*y_k, y_k, 1);
+
+        double e = determinant(x_i*x_i + y_i*y_i, x_i, 1,
+                               x_j*x_j + y_j*y_j, x_j, 1,
+                               x_k*x_k + y_k*y_k, x_k, 1);
+
+        double f = determinant(x_i*x_i + y_i*y_i, x_i, y_i,
+                               x_j*x_j + y_j*y_j, x_j, y_j,
+                               x_k*x_k + y_k*y_k, x_k, y_k);
+
+        return Math.sqrt((d*d+e*e)/(4*a*a)+f/a);
+    }
+
+    /**
+    Returns the determinant of the given matrix:
+    a b c
+    d e f
+    g h i
+    */
+    public static double determinant(double a, double b, double c,
+                                     double d, double e, double f,
+                                     double g, double h, double i) {
+        return a*(e*i-f*h) - b*(d*i-f*g) + c*(d*h-e*g);
+    }
+
+    /**
+    Returns the distance between two points
+    */
+    public static double distance(Point a, Point b) {
+        return distance(a.x, a.y, b.x, b.y);
+    }
+
+    /**
+    Returns the distance between two points (x0,y0) and (x1, y1)
      * @param x0 the x coordinate of the first point
      * @param y0 the y coordinate of the first point
      * @param x1 the x coordinate of the second point
