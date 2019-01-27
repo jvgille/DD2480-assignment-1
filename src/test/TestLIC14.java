@@ -7,54 +7,6 @@ import org.junit.jupiter.api.Test;
 
 class TestLIC14 {
 
-    /**
-     * Test the utility "computeTriangleArea" function. It should be true that:
-     * computeTriangleArea(A,B,C) ==
-     * computeTriangleArea(A,C,B) and so one i.e computeTriangleArea is commutative
-     */
-    @Test
-    void test1() {
-        double[] x = { 10, 13, 24, 0, 1, 10, 14, -10, -10 }; // coordinates of our points
-        double[] y = { 98, 4, 13, 98, 0, -10, -10, 10, -10 };
-        boolean[] areEqual = new boolean[3]; // quadrants in which they should belong
-        boolean test = true;
-        for (int i = 0; i < 3; ++i) {
-            areEqual[i] = ((Decide.computeTriangleArea(x[3 * i], y[3 * i], x[3 * i + 1], y[3 * i + 1], x[3 * i + 2],
-                    y[3 * i + 2]) == Decide.computeTriangleArea(x[3 * i], y[3 * i], x[3 * i + 2], y[3 * i + 2],
-                            x[3 * i + 1], y[3 * i + 1]))
-                    && (Decide.computeTriangleArea(x[3 * i], y[3 * i], x[3 * i + 2], y[3 * i + 2], x[3 * i + 1],
-                            y[3 * i + 1]) == Decide.computeTriangleArea(x[3 * i + 1], y[3 * i + 1], x[3 * i + 2],
-                                    y[3 * i + 2], x[3 * i], y[3 * 1]))
-                    && (Decide.computeTriangleArea(x[3 * i + 1], y[3 * i + 1], x[3 * i + 2], y[3 * i + 2], x[3 * i],
-                            y[3 * i]) == Decide.computeTriangleArea(x[3 * i + 1], y[3 * i + 1], x[3 * i], y[3 * i],
-                                    x[3 * i + 2], y[3 * i + 2]))
-                    && (Decide.computeTriangleArea(x[3 * i + 1], y[3 * i + 1], x[3 * i], y[3 * i], x[3 * i + 2],
-                            y[3 * i + 2]) == Decide.computeTriangleArea(x[3 * i + 2], y[3 * i + 2], x[3 * i], y[3 * i],
-                                    x[3 * i + 1], y[3 * i + 1]))
-                    && Decide.computeTriangleArea(x[3 * i + 2], y[3 * i + 2], x[3 * i], y[3 * i], x[3 * i + 1],
-                            y[3 * i + 1]) == Decide.computeTriangleArea(x[3 * i + 2], y[3 * i + 2], x[3 * i + 1],
-                                    y[3 * i + 1], x[3 * i], y[3 * i]));
-            test = test && areEqual[i];
-        }
-
-        assertTrue(test);
-    }
-
-    @Test
-    void test2() {// Test the utility computeTriangleArea with basic and corner cases
-        double[] x = { 0, 1, 0, 0, 2, 1, 0, 1, 2 }; // coordinates of our points
-        double[] y = { 0, 0, 1, 0, 2, 1, 0, 1, 0 };
-        double[] realAreas = {0.5, 0, 1}; //we are computing areas for three triangles
-        double[] areas = new double[3];
-        boolean test = true;
-        for (int i = 0; i < areas.length; ++i) {
-            areas[i] = Decide.computeTriangleArea(x[3*i],y[3*i],x[3*i+1],y[3*i+1],x[3*i+2],y[3*i+2]);
-            test = test && (areas[i] == realAreas[i]); // verifying that our computed area is the same as the real one
-        }
-
-        assertTrue(test);
-    }
-
     @Test
     void test3() { //Basic test that should return true
         Parameters p = new Parameters();
