@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class TestLIC12{
+public class LIC12Test {
 
   /*
   LIC met if both of the following statements are true;

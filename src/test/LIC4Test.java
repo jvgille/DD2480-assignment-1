@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import main.*;
 
-public class TestLIC4 {
+public class LIC4Test {
 
     @Test
     public void test2() { // Test the LIC4 function for corner case

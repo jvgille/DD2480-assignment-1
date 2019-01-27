@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class TestLIC14 {
+class LIC14Test {
 
     @Test
     void test3() { //Basic test that should return true

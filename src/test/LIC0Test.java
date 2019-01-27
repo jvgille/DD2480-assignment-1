@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import main.*;
 
-public class TestLic0 {
+public class LIC0Test {
 
 		//intitialize PARAMETERS
 		@Before
