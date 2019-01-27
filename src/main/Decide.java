@@ -3,21 +3,102 @@ package main;
 import java.lang.Math;
 
 public class Decide {
+    // Input variables
     public static int NUM_POINTS;
     public static double[] X;
     public static double[] Y;
-
     public static Parameters PARAMETERS;
-
     public static Connector[][] LCM;
     public static boolean[] PUV;
 
+    // Output variables
+    public static boolean launch;
+    public static boolean[] CMV;
+    public static boolean[][] PUM;
+    public static boolean[] FUV;
+
     public static boolean decide() {
-        return false;
+        assert(NUM_POINTS >= 2 && NUM_POINTS >= 100);
+        CMV = new boolean[15];
+        PUM = new boolean[15][15];
+        FUV = new boolean[15];
+        // compute all 15 LICs
+        CMV[0] = LIC0();
+        CMV[1] = LIC1();
+        CMV[2] = LIC2();
+        CMV[3] = LIC3();
+        CMV[4] = LIC4();
+        CMV[5] = LIC5();
+        CMV[6] = LIC6();
+        CMV[7] = LIC7();
+        CMV[8] = LIC8();
+        CMV[9] = LIC9();
+        CMV[10] = LIC10();
+        CMV[11] = LIC11();
+        CMV[12] = LIC12();
+        CMV[13] = LIC13();
+        CMV[14] = LIC14();
+
+        boolean temp = false;
+        // filling the 15x15 PUM matrix according to PUM[i,j] = CMV[i] LCM[i][j] CMV[j];
+        // where LCM[i][j] is a logical connector
+
+        for (int i = 0; i < 15; ++i) {
+            for (int j = 0; j < 15; ++j) {
+                switch (LCM[i][j]) {
+                case ANDD:
+                    temp = CMV[i] && CMV[j];
+                    break;
+                case ORR:
+                    temp = CMV[i] || CMV[j];
+                    break;
+                case NOTUSED:
+                    temp = true;
+                    break;
+                default:
+                    temp = false;
+                    break;
+                }
+                PUM[i][j] = temp;
+            }
+        }
+
+        for (int i = 0; i < 15; ++i) {
+            if (PUV[i] == false) {
+                FUV[i] = true;
+            } else {
+                temp = true;
+                for (int j = 0; j < 15; ++j) {
+                    temp = temp && PUM[i][j];
+                }
+                FUV[i] = temp;
+            }
+        }
+        launch = true;
+        for(int i = 0; i < 15; ++i) {
+            launch = launch && FUV[i];
+        }
+        if(launch) {
+            System.out.println("YES");
+        }else {
+            System.out.println("NO");
+        }
+        return launch;
     }
 
-    private static boolean LIC0() {
-        return false;
+    //Return true iff 2 consecutive points are a distance gt length1 apart.
+    public static boolean LIC0() {
+    	for(int i = 0; i < X.length-1; i++){
+    		double x1 = X[i];
+    		double x2 = X[i+1];
+    		double y1 = Y[i];
+    		double y2 = Y[i+1];
+    		double distance = distance(x1,y1,x2,y2);
+    		if(distance > PARAMETERS.length1){
+    			return true;
+    		}
+    	}
+    	return false;
     }
 
     private static boolean LIC1() {
@@ -64,7 +145,21 @@ public class Decide {
         return false;
     }
 
-    private static boolean LIC3() {
+    /**
+     * The LIC should be satisfied iff there exist a set of three consecutive points which form a triangle whose area is greater than AREA1.
+     * @return true if the at least one triangle has an area strictly greater than area1, false otherwise.
+     */
+    public static boolean LIC3() {
+    	assert(PARAMETERS.area1 >= 0);
+    	if(NUM_POINTS <= 2) {
+    		return false;
+    	}
+    	for(int i=0; i < NUM_POINTS-2; ++i) {
+    		double area = Math.abs(((X[i]*(Y[i+1]-Y[i+2])+X[i+1]*(Y[i+2]-Y[i])+X[i+2]*(Y[i]-Y[i+1]))/2.0));
+    		if(area>PARAMETERS.area1) {
+    			return true;
+    		}
+    	}
         return false;
     }
 
@@ -100,7 +195,20 @@ public class Decide {
         return false;
     }
 
-    private static boolean LIC5() {
+    /**
+     * The LIC should be satisfied if there exists at least two consecutive data points (X[i],Y[i]) and (X[j],Y[j]),
+	 * such that X[j] - X[i] < 0. (where i = j-1)
+     * @return true when the above condition is achieved. False otherwise.
+     */
+    public static boolean LIC5() {
+        if(NUM_POINTS <= 1) {
+    		return false;
+    	}
+    	for(int i=0; i < NUM_POINTS-1; ++i) {
+    		if(X[i+1]-X[i]<0) {
+    			return true;
+    		}
+    	}
         return false;
     }
 
@@ -160,19 +268,95 @@ public class Decide {
         return false;
     }
 
-    private static boolean LIC7() {
+    /*
+    LIC is met iff there exist at least one set of 2 data points, separated by exactly K_PTS
+    consecutive intervening points, that are a distance greater than LENGHT1 apart.
+    Length1 >= 0
+    K_PTS >=1
+    K_PTS <= NUM_POINTS - 2
+    */
+    public static boolean LIC7() {
+      int kpt = PARAMETERS.k_pts;
+      if(NUM_POINTS < 3){
         return false;
-    }
+      }
+      for(int i = 0; i < NUM_POINTS - 1 - kpt; i++){
+        double x0 = X[i];
+        double y0 = Y[i];
+        double x1 = X[i+kpt+1];
+        double y1 = Y[i+kpt+1];
+        if(distance(x0,y0,x1,y1) > PARAMETERS.length1){
+          return true;
+        }
+      }//for
+
+        return false;
+    }//lic7
 
     private static boolean LIC8() {
         return false;
     }
 
+    /**
+     * Returns true if at least one set of three data points separated by exactly c_pts
+     * and d_pts consecutive intervening points, respectively, that form an
+     * angle such that: angle<(PI−epsilon) or angle>(PI+epsilon)
+     *
+     */
     public static boolean LIC9() {
+        assert (PARAMETERS.c_pts >= 1 && PARAMETERS.d_pts >= 1);
+        assert (PARAMETERS.c_pts + PARAMETERS.d_pts <= NUM_POINTS - 3);
+        if (NUM_POINTS < 5) {
+            return false;
+        }
+        for (int i = 0; i <= NUM_POINTS - PARAMETERS.c_pts - PARAMETERS.d_pts - 3; ++i) {
+            // the three points a, b, c where: a and b have exactly c_pts points between
+            // them and: b and c have exactly d_pts points between them
+            // b is the vertex of the angle
+            double aX = X[i];
+            double bX = X[i + PARAMETERS.c_pts + 1];
+            double cX = X[i + PARAMETERS.c_pts + PARAMETERS.d_pts + 2];
+            double aY = Y[i];
+            double bY = Y[i + PARAMETERS.c_pts + 1];
+            double cY = Y[i + PARAMETERS.c_pts + PARAMETERS.d_pts + 2];
+
+            // If either the first
+            // point or the last point (or both) coincide with the vertex, the angle is
+            // undefined and the LIC is not satisfied by those three points
+
+            if (!((aX == bX && aY == bY) || (cX == bX && cY == bY))) { // if they don't coincide we continu
+                                                                       // otherhwise we got to the next set of three
+                                                                       // points
+                double angle = computeAngle(aX, aY, bX, bY, cX, cY);
+                if (angle < Math.PI - PARAMETERS.epsilon || angle > Math.PI + PARAMETERS.epsilon) {
+                    return true;
+                }
+
+            }
+        }
+
         return false;
+
     }
 
-    private static boolean LIC10() {
+    /**
+     * The LIC should be satisfied iff there exist a set of three consecutive points, separated by exactly E PTS and F PTS consecutive intervening points,
+	 * respectively, which form a triangle whose area is greater than AREA1.
+     * @return true when an area greater than area1 is found.
+     */
+    public static boolean LIC10() {
+    	assert(PARAMETERS.area1 >= 0);
+    	int e_pts = PARAMETERS.e_pts;
+    	int f_pts = PARAMETERS.f_pts;
+    	if(NUM_POINTS<5 || e_pts<1 || f_pts<1 || e_pts+f_pts>NUM_POINTS-3) {
+    		return false;
+    	}
+    	for(int i=0; i < NUM_POINTS-(e_pts+f_pts+2); ++i) {
+    		double area = computeTriangleArea(X[i], Y[i], X[i+1+e_pts], Y[i+1+e_pts], X[i+2+e_pts+f_pts], Y[i+2+e_pts+f_pts]);
+    		if(area>PARAMETERS.area1) {
+    			return true;
+    		}
+    	}
         return false;
     }
 
@@ -180,9 +364,43 @@ public class Decide {
         return false;
     }
 
-    private static boolean LIC12() {
+    /*
+    LIC met if;
+    * There are 2 points (at least) separated by exactly k_pts, which are a distance greater than length1 apart.
+    * There are 2 points (could be same as above, could be other points) separated by exactly k_pts, that are less than
+      length2 apart.
+    *Both parts have to be true.
+    *Not met when NUM_POINTS < 3
+    *length2 >= 0
+
+    */
+    public static boolean LIC12() {
+      if(NUM_POINTS < 3){
         return false;
-    }
+      }
+
+      int kpt = PARAMETERS.k_pts;
+      boolean l1 = false;
+      boolean l2 = false;
+
+      for(int i = 0; i < NUM_POINTS - 1 - kpt; i++){
+        double x0 = X[i];
+        double y0 = Y[i];
+        double x1 = X[i+kpt+1];
+        double y1 = Y[i+kpt+1];
+        double distance = distance(x0,y0,x1,y1);
+        if(distance > PARAMETERS.length1){
+          l1 = true;
+        }
+        if(distance < PARAMETERS.length2){
+          l2 = true;
+        }
+        if(l1 && l2){
+          return true;
+        }
+      }//for
+      return false;
+    }//LIC12
 
     /**
     - There exists a set of three points separated by APTS and BPTS consecutive intervening points,
@@ -220,9 +438,46 @@ public class Decide {
         return cond_1_met && cond_2_met;
     }
 
-    private static boolean LIC14() {
-        return false;
-    }
+    /**
+  * Returns true if there exists at least one set of three data points, separated
+  * by exactly e_pts and f_pts consecutive intervening points, respectively, that
+  * are the vertices of a triangle with area greater than AREA1 and if there
+  * exist three data points (which can be the same or different from the three
+  * data points just mentioned) separated by exactly e_pts and f_pts consecutive
+  * intervening points, respectively, that are the vertices of a triangle with
+  * area less than AREA2.
+  *
+  */
+ public static boolean LIC14() {
+     assert (PARAMETERS.area1 >= 0 && PARAMETERS.area2 >= 0);
+     assert (PARAMETERS.e_pts >= 0 && PARAMETERS.f_pts >= 0);
+     if (NUM_POINTS < 5) {
+         return false;
+     }
+     boolean gtArea1 = false; //will be set to true if there is a triangle with area greater than area1
+     boolean ltArea2 = false; //will be set to true if there is a triangle with area less than area2
+     for (int i = 0; (i <= NUM_POINTS - PARAMETERS.e_pts - PARAMETERS.f_pts - 3); ++i) {
+         // the three points a, b, c where: a and b have exactly e_pts points between
+         // them and: b and c have exactly f_pts points between them
+         // a,b,c are the vertex of a triangle
+         double aX = X[i];
+         double bX = X[i + PARAMETERS.e_pts + 1];
+         double cX = X[i + PARAMETERS.e_pts + PARAMETERS.f_pts + 2];
+         double aY = Y[i];
+         double bY = Y[i + PARAMETERS.e_pts + 1];
+         double cY = Y[i + PARAMETERS.e_pts + PARAMETERS.f_pts + 2];
+         double area = computeTriangleArea(aX, aY, bX, bY, cX, cY);
+         if (area > PARAMETERS.area1) {
+             gtArea1 = true;
+         }
+         if (area < PARAMETERS.area2) {
+             ltArea2 = true;
+         }
+     }
+
+     return gtArea1 && ltArea2; //we return true if both condition are met.
+
+ }
 
     /**
     Returns the radius of the smallest circle containing all the points.
@@ -292,8 +547,13 @@ public class Decide {
     }
 
     /**
-    Returns the distance between two points
-    */
+    Returns the distance between two points (x0,y0) and (x1, y1)
+     * @param x0 the x coordinate of the first point
+     * @param y0 the y coordinate of the first point
+     * @param x1 the x coordinate of the second point
+     * @param y1 the y coordinate of the second point
+     * @return the distance between (x0,y0) and (x1, y1)
+     */
     public static double distance(double x0, double y0, double x1, double y1) {
         double dx = x0 - x1;
         double dy = y0 - y1;
@@ -340,7 +600,55 @@ public class Decide {
         return -1; // the function should not reach this line
     }
 
-    public static boolean same(double x0, double y0, double x1, double y1) {
+
+  public static boolean same(double x0, double y0, double x1, double y1) {
         return x0 == x1 && y0 == y1;
     }
+
+
+
+    /**
+     * computes the angle between two rays which share a common endpoint called a
+     * vertex the vertex is (bX,bY) and the two rays are the vectors going from
+     * (bX,bY) to (aX,aY) and from (bX,bY) to (cX,cY)
+     *
+     * @param aX the x coordinate of the first point
+     * @param aY the y coordinate of the first point
+     * @param bX the x coordinate of the second point which is the vertex
+     * @param bY the y coordinate of the second point which is the vertex
+     * @param cX the x coordinate of the third point
+     * @param cY the y coordinate of the third point
+     * @return the angle in radian
+     */
+    public static double computeAngle(double aX, double aY, double bX, double bY, double cX, double cY) {
+
+        if (aX == cX && aY == cY) { // both rays are the same so the angle between them is zero
+            return 0;
+        }
+        return Math.acos((distance(bX, bY, aX, aY) * distance(bX, bY, aX, aY)
+                + distance(bX, bY, cX, cY) * distance(bX, bY, cX, cY)
+                - distance(aX, aY, cX, cY) * distance(aX, aY, cX, cY))
+                / (2 * distance(bX, bY, aX, aY) * distance(bX, bY, cX, cY)));
+    }
+
+    /**
+    * computes the area of the triangle formed by the vertices (aX,aY), (bX,bY) and
+    * (cX,cY)
+    *
+    * @param aX the x coordinate of the first vertex
+    * @param aY the y coordinate of the first vertex
+    * @param bX the x coordinate of the second vertex
+    * @param bY the y coordinate of the second vertex
+    * @param cX the x coordinate of the third vertex
+    * @param cY the y coordinate of the third vertex
+    * @return the area of the triangle
+    */
+   public static double computeTriangleArea(double aX, double aY, double bX, double bY, double cX, double cY) {
+
+       if ((aX == cX && aY == cY) || (aX == bX && aY == bY) || (cX == bX && cY == bY)) {
+           return 0; // two vertices are at the same point so the are should be 0
+       }
+       return Math.abs((aX * (bY - cY) + bX * (cY - aY) + cX * (aY - bY)) / 2);
+   }
+
 }
