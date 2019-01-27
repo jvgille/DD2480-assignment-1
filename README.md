@@ -29,7 +29,8 @@ Your contribution
 * Axel Larusson
 Your contribution
 * Joel Ekelöf
-Your contribution
+I've fixed some organization in the repository, such as creating issues and writing the README.
+I've also worked on a few LIC's; LIC 0, LIC 7, and LIC 12. Naturally I've been to meetings and been active in the messenger-group, just as everyone else in the group. 
 * Joel Gille Vikström
 Your contribution
 * Paul Roland Jacques Griesser
