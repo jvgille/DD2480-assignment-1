@@ -7,7 +7,6 @@ import org.junit.Test;
 import main.*;
 
 public class LIC1Test {
-	
     /*
 	There exists at least one set of three consecutive data points that 
     cannot all be contained within or on a circle of radius RADIUS1.

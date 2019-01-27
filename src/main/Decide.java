@@ -27,6 +27,7 @@ public class Decide {
     (0 ≤ RADIUS1)
     */
     public static boolean LIC1() {
+        
         //if radius is less than 0
         if (0 > PARAMETERS.radius1) {
             return false;
