@@ -9,7 +9,7 @@ import main.*;
 public class LIC8Test {
 
     @Test
-    public void test1() { // Test the LIC8 for to few NUM_POINTS
+    public void test1() { // Test the LIC1 for to few NUM_POINTS
         Parameters p = new Parameters();
         p.a_pts = 1;
         p.b_pts = 1;

@@ -1,12 +1,10 @@
-import static org.junit.Assert.*;
+package main;
 
-import org.junit.*;
-import java.lang.Math;
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import main.*;
-
-import static java.lang.Math.pow;
-import static java.lang.Math.sqrt;
 
 public class LIC1Test {
 	
@@ -18,31 +16,31 @@ public class LIC1Test {
 	TO-DO
 	This is not finished... Im having test issues and wanted tu rush smallestCircle in master.
 	 */
-	@Before
-	public void before() {
-		Decide.PARAMETERS = new Parameters();
-	}
-
-	
 	@Test
 	public void test1() {
-		Decide.NUM_POINTS = 5;
-        Decide.PARAMETERS.radius1 = 3;
-
-        //expect infinity and true
-		Decide.X = new double[]{0, 1, 2, 3, 4};
-        Decide.Y = new double[]{1, 2, 3, 4, 5};
-        assertEquals(Decide.LIC1(), true);
+		Parameters p = new Parameters();
+        double[] x = { 0, 1, 2, 3, 4 }; // coordinates of our points
+        double[] y = { 0, 1, 2, 3, 4 };
+		Decide.NUM_POINTS = x.length;
+        Decide.X = x;
+		Decide.Y = y;
+		p.radius1 = -1;
+		Decide.PARAMETERS = p;
+		
+        assertFalse(Decide.LIC1()); //should fail (radius<0)
 	}
 
 	@Test
 	public void test2() {
-		Decide.NUM_POINTS = 5;
-        Decide.PARAMETERS.radius1= 15;
-
-        //expect false
-		Decide.X = new double[]{10, 5, 8, 15, 6};
-        Decide.Y = new double[]{5, 8, 11, 13, 15};
-        assertEquals(Decide.LIC1(), false);
+		Parameters p = new Parameters();
+        double[] x = { 1, 6, 3, 4 }; // coordinates of our points
+        double[] y = { 1, 2, 9, 4 };
+		Decide.NUM_POINTS = x.length;
+        Decide.X = x;
+		Decide.Y = y;
+		p.radius1 = 6;
+		Decide.PARAMETERS = p;
+		
+		assertTrue(Decide.LIC1()); //should pass.
 	}
 }

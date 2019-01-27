@@ -31,7 +31,6 @@ public class Decide {
         if (0 > PARAMETERS.radius1) {
             return false;
         }
-
         for (int i = 0; i < NUM_POINTS - 2; i++){ //has to be three in a row (-2)
             double first_x = X[i];
             double first_y = Y[i];
@@ -40,65 +39,10 @@ public class Decide {
             double third_x = X[i+2];
             double third_y = Y[i+2];
 
-            //length between points
-            double distFirstSecond = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
-            double distFirstThird = sqrt(pow(x1 - x3, 2) + pow(y1 - y3, 2));
-            double distSecondThird = sqrt(pow(x2 - x3, 2) + pow(y2 - y3, 2));
-
-            double longesDist = 0;
-            double longestDistAverageX = 0;
-            double longestDistAverageY = 0;
-            double distCenterToOutsider = 0;
-            double longestDistRadius = 0;
-
-            //find the smallest cyrcle, tests
-            if(distFirstSecond >= distFirstThird){
-                if(distFirstSecond >= distSecondThird){
-                    longesDist = distFirstSecond;
-                    longestDistAverageX = (x1 + x2)/2;
-                    longestDistAverageY = (y1 + y2)/2;
-                    distCenterToOutsider = sqrt(pow(longestDistAverageX - x3, 2) + pow(longestDistAverageY - y3, 2));
-                }
-                else{
-                    longesDist = distSecondThird;
-                    longestDistAverageX = (x2 + x3)/2;
-                    longestDistAverageY = (y2 + y3)/2;
-                    distCenterToOutsider = sqrt(pow(longestDistAverageX - x1, 2) + pow(longestDistAverageY - y1, 2));
-                }
-            }
-            else if(distFirstThird >= distFirstSecond){
-                if(distFirstThird >= distSecondThird){
-                    longesDist = distFirstThird;
-                    longestDistAverageX = (x1 + x3)/2;
-                    longestDistAverageY = (y1 + y3)/2;
-                    distCenterToOutsider = sqrt(pow(longestDistAverageX - x2, 2) + pow(longestDistAverageY - y2, 2));
-                }
-                else{
-                    longesDist = distSecondThird;
-                    longestDistAverageX = (x2 + x3)/2;
-                    longestDistAverageY = (y2 + y3)/2;
-                    distCenterToOutsider = sqrt(pow(longestDistAverageX - x1, 2) + pow(longestDistAverageY - y1, 2));
-                }
-            }
-            double radius = 0;
-            longestDistRadius = longesDist/2;
-            if (longestDistRadius >= distCenterToOutsider){
-                radius = longestDistRadius;
-            }
-            else{
-                // circumcircle if needed
-                double totalLength = distFirstSecond * distFirstThird * distSecondThird;
-                double radiusRange =
-                    (distFirstSecond + distFirstThird + distSecondThird) *
-                    (distFirstSecond + distFirstThird - distSecondThird) *
-                    (distFirstThird + distSecondThird - distFirstSecond) *
-                    (distSecondThird + distFirstSecond - distFirstThird);
-                radius = totalLength / sqrt(radiusRange);
-            }
-            // check if points are in the radius
-            if (radius > PARAMETERS.radius1) {
+            //throw to smallestCircle
+            if(smallestCircle(first_x, first_y, second_x, second_y, third_x, third_y, PARAMETERS.radius1)) {
                 return true;
-            }
+            } 
         }
         return false;
     }
