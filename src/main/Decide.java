@@ -323,7 +323,7 @@ public class Decide {
             radiusCircle = totalLength / sqrt(radiusRange);
         }
         // Check 
-        if (radiusCircle >= radiusIn) {
+        if (radiusCircle <= radiusIn) {
             return true;
         }
         return false;
