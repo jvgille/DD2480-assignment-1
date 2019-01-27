@@ -25,7 +25,9 @@ Download a JUnit standalone .jar file. Use the following makefile to run all tes
 
 ## Statement of contributions
 * Arthur Carl Vignon
-Your contribution
+I was added to the group on Wednesday morning after the group had already met one time and spoken about the structure. 
+We decided together the division of the task and whether or not we should create static fields or an instance of the decide class.
+I coded LICs 3, 5, 10 and 11 along with their tests and reviewed a few LICs.
 * Axel Larusson
 Your contribution
 * Joel Ekelöf
