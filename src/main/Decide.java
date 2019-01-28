@@ -1,8 +1,6 @@
 package main;
 
 import java.lang.Math;
-import static java.lang.Math.pow;
-import static java.lang.Math.sqrt;
 
 public class Decide {
     // Input variables
@@ -102,11 +100,12 @@ public class Decide {
     	}
     	return false;
     }
+
     /*
-    There exists at least one set of three consecutive data points that 
-    cannot all be contained within or on a circle of radius RADIUS1.
-    (0 ≤ RADIUS1)
-    */
+     * There exists at least one set of three consecutive data points that
+     * cannot all be contained within or on a circle of radius RADIUS1.
+     * (0 ≤ RADIUS1)
+     */
     public static boolean LIC1() {
         //if radius is less than 0
         if (0 > PARAMETERS.radius1) {
@@ -127,21 +126,16 @@ public class Decide {
             if (smallestCircle(new Point[]{first, second, third}) > PARAMETERS.radius1) {
                 return true;
             }
-            /* old method 
-            //throw to smallestCircle
-            if(smallestCircle(first_x, first_y, second_x, second_y, third_x, third_y, PARAMETERS.radius1)) {
-                return true;
-            }  
-            */
         }
         return false;
     }
+
     /**
-    Returns true if at least one set of three consecutive points form an angle such that
-        angle<(PI−EPSILON)
-    or
-        angle>(PI+EPSILON)
-    */
+     * Returns true if at least one set of three consecutive points form an angle such that
+     *     angle<(PI−EPSILON)
+     * or
+     *     angle>(PI+EPSILON)
+     */
     public static boolean LIC2() {
         for (int i = 2; i < NUM_POINTS; i++) {
             double first_x = X[i-2];
@@ -317,19 +311,19 @@ public class Decide {
     }//lic7
 
     /*
-    There exists at least one set of three data points separated by exactly A PTS 
-    and B PTS consecutive intervening points, respectively, that cannot be 
-    contained within or on a circle of radius RADIUS1. The condition is not 
-    met when NUMPOINTS < 5.
-    1 ≤ A PTS, 1 ≤ B PTS
-    A PTS+B PTS ≤ (NUMPOINTS−3)
-    */
-    private static boolean LIC8() {
+     * There exists at least one set of three data points separated by exactly A PTS
+     * and B PTS consecutive intervening points, respectively, that cannot be
+     * contained within or on a circle of radius RADIUS1. The condition is not
+     * met when NUMPOINTS < 5.
+     * 1 ≤ A PTS, 1 ≤ B PTS
+     * A PTS+B PTS ≤ (NUMPOINTS−3)
+     */
+    public static boolean LIC8() {
         //conditions
         if(NUM_POINTS < 5 || PARAMETERS.a_pts < 1 || PARAMETERS.b_pts < 1 || PARAMETERS.a_pts + PARAMETERS.b_pts > NUM_POINTS - 3){
             return false;
         }
-        
+
         for(int i = 0; i < NUM_POINTS - 2 - PARAMETERS.a_pts - PARAMETERS.b_pts; i++){ //has to be three in a row (-2)
             double first_x = X[i];
             double first_y = Y[i];
@@ -342,16 +336,10 @@ public class Decide {
             Point second = new Point(second_x, second_y);
             Point third = new Point(third_x, third_y);
 
-            if (smallestCircle(new Point[]{first, second, third}) >= PARAMETERS.radius1) {
+            if (smallestCircle(new Point[]{first, second, third}) > PARAMETERS.radius1) {
                 return true;
             }
-
-            /*  old method
-            if(smallestCircle(first_x, first_y, second_x, second_y, third_x, third_y, PARAMETERS.radius1)) {
-                return true;
-            }  
-            */
-        } 
+        }
         return false;
     }
 
@@ -416,7 +404,7 @@ public class Decide {
     }
 
     /**
-     * The LIC should be satisfied if there exists at least two consecutive data points (X[i],Y[i]) and (X[j],Y[j]), 
+     * The LIC should be satisfied if there exists at least two consecutive data points (X[i],Y[i]) and (X[j],Y[j]),
 	 * separated by exactly G PTS consecutive intervening points,
 	 * such that X[j] - X[i] < 0. (where i = j-1)
      * @return true when the above condition is completed. False otherwise

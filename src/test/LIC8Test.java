@@ -9,7 +9,7 @@ import main.*;
 public class LIC8Test {
 
     @Test
-    public void test1() { // Test the LIC1 for to few NUM_POINTS
+    public void test1() { // Test the LIC8 for to few NUM_POINTS
         Parameters p = new Parameters();
         p.a_pts = 1;
         p.b_pts = 1;
@@ -23,7 +23,7 @@ public class LIC8Test {
         assertFalse(Decide.LIC8()); //should fail (NUM_POINTS<5)
     }
     @Test
-    public void test2() { // Test the LIC8 for negative a_pts
+    public void test2() {
         Parameters p = new Parameters();
         p.a_pts = -1;
         p.b_pts = 1;
@@ -37,11 +37,11 @@ public class LIC8Test {
         assertFalse(Decide.LIC8()); //should fail (a_pts<5)
     }
     @Test
-    public void test3() { // Test the LIC8 for negative a_pts
+    public void test3() {
         Parameters p = new Parameters();
         p.a_pts = 2;
         p.b_pts = 1;
-        p.radius1 = 10;
+        p.radius1 = 5;
         double[] x = { 0, 1, 3, 5, 2, 6, 9 }; // coordinates of our points
         double[] y = { 0, 1, 4, 2, 4, 9, 8 };
         Decide.NUM_POINTS = x.length;
@@ -49,7 +49,7 @@ public class LIC8Test {
         Decide.Y = y;
         Decide.PARAMETERS = p;
 
-        assertTrue(Decide.LIC8()); //should be true. 
+        assertTrue(Decide.LIC8()); //should be true.
     }
 
 }
