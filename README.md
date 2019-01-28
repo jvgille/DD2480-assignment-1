@@ -29,7 +29,7 @@ I was added to the group on Wednesday morning after the group had already met on
 We decided together the division of the task and whether or not we should create static fields or an instance of the decide class.
 I coded LICs 3, 5, 10 and 11 along with their tests and reviewed a few LICs.
 * Axel Larusson
-I helped deciding on structure, organization and assign work to all group members. I worked on LIC 1 and LIC 8 and their tests. I also created the first version of the method for the smallest circle which could be used in other LIC's. Finally I always showed up for all group meetings and be active in our messenger group.
+I helped deciding on structure, organization and assign work to all group members. I worked on LIC 1 and LIC 8 and their tests. I also created the first version of the method for the smallest circle which could be used in other LIC's. Finally I always showed up for all group meetings and was active in our messenger group.
 * Joel Ekelöf
 I've fixed some organization in the repository, such as creating issues and writing the README.
 I've also worked on a few LIC's; LIC 0, LIC 7, and LIC 12. Naturally I've been to meetings and been active in the messenger-group, just as everyone else in the group. 
