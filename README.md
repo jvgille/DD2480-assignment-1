@@ -6,24 +6,14 @@ A DECIDE()-function was created that uses radar-tracking information (a set of p
 ### Structure
 The code can be found in the __/src/main__ folder, and all the tests, every LIC has its own test, can be found in the __/src/test__ folder.
 
-### Getting started
-#### Step one
-Fork or download the project.
-#### Step two
-The tests are written in JUnit and can be run using an IDEA of your choice or using a JUnit binary from the command-line.
+We are using Java 8 and JUnit 5.
 
-##### Running the tests from the command-line
-Download a JUnit standalone .jar file. Use the following makefile to run all tests.
+### Running Tests
+Fork/clone/download the project, and then use `make test` to build and run all the tests.
 
-###### Makefile
-    clean:
-	    rm -r bin/*
-    build:
-	    javac -d bin -cp [path to JUnit standalone .jar] src/main/* src/test/*
-    test: build
-	    java -jar [path to JUnit standalone .jar] -cp bin/ --scan-classpath
+The top-level tests are in `src/test/DecideTest.java`.
 
-## Statement of contributions
+### Statement of contributions
 * Arthur Carl Vignon
 I was added to the group on Wednesday morning after the group had already met one time and spoken about the structure.
 We decided together the division of the task and whether or not we should create static fields or an instance of the decide class.
