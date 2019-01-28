@@ -18,7 +18,7 @@ public class Decide {
     public static boolean[] FUV;
 
     public static boolean decide() {
-        assert(NUM_POINTS >= 2 && NUM_POINTS >= 100);
+        assert(NUM_POINTS >= 2 && NUM_POINTS < 100);
         CMV = new boolean[15];
         PUM = new boolean[15][15];
         FUV = new boolean[15];
